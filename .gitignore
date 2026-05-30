@@ -1,0 +1,11 @@
+# Secrets — never commit Figma tokens
+.mcp.json
+.env
+.env.*
+
+# Generated reports
+*-report.json
+report.json
+
+# Node
+node_modules/

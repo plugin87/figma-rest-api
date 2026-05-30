@@ -1,0 +1,25 @@
+{
+  "name": "figma-rest-api",
+  "version": "0.1.0",
+  "description": "Pull design data (colors, variable bindings) from Figma via the official REST API — no app patching, no MCP rate limits. Maps Figma colors to your design tokens.",
+  "type": "module",
+  "bin": {
+    "figma-pull": "figma-pull.mjs"
+  },
+  "files": [
+    "figma-pull.mjs"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "figma",
+    "figma-api",
+    "design-tokens",
+    "rest-api",
+    "oklch",
+    "color"
+  ],
+  "author": "plugin87",
+  "license": "MIT"
+}
