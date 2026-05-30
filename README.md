@@ -58,10 +58,6 @@ It's resolved from the **first** source found:
 | 1 | `$FIGMA_PERSONAL_ACCESS_TOKEN` |
 | 2 | `mcpServers.figma.env.FIGMA_PERSONAL_ACCESS_TOKEN` in `./.mcp.json` |
 
-> [!WARNING]
-> Never commit your token. The bundled `.gitignore` already excludes `.mcp.json`
-> and `.env`. The tool never writes the token into any output.
-
 ## ⚡ Usage
 
 ```bash
