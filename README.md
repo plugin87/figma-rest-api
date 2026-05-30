@@ -58,11 +58,31 @@ It's resolved from the **first** source found:
 | 1 | `$FIGMA_PERSONAL_ACCESS_TOKEN` |
 | 2 | `mcpServers.figma.env.FIGMA_PERSONAL_ACCESS_TOKEN` in `./.mcp.json` |
 
+Pick one (the example token below is a placeholder — use your own):
+
+```bash
+# Option 1 — environment variable
+export FIGMA_PERSONAL_ACCESS_TOKEN="figd_YOUR_TOKEN_HERE"
+```
+
+```jsonc
+// Option 2 — .mcp.json in your project root
+{
+  "mcpServers": {
+    "figma": {
+      "env": {
+        "FIGMA_PERSONAL_ACCESS_TOKEN": "figd_YOUR_TOKEN_HERE"
+      }
+    }
+  }
+}
+```
+
 ## ⚡ Usage
 
 ```bash
 # by node id — run from your project root
-FIGMA_PERSONAL_ACCESS_TOKEN=figd_xxx \
+FIGMA_PERSONAL_ACCESS_TOKEN=figd_YOUR_TOKEN_HERE \
   figma-pull --file <FILE_KEY> 72-2591 308-14
 
 # write a JSON report
