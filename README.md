@@ -2,10 +2,12 @@
 
 # 🎨 figma-rest-api
 
-**Pull colors & variable bindings from Figma — the official, sanctioned way.**
+**Read colors & variable bindings from Figma — and write WCAG fixes back, the sanctioned way.**
 
-Read your design straight from `api.figma.com`, then map every color back to your
-design tokens. No app patching, no remote-debugging hacks, no MCP rate limits.
+Pull your design straight from `api.figma.com` and map every color to your design
+tokens. Then apply contrast fixes through the bundled **Figma plugin** — because
+the REST API is read-only, design writes go through the Plugin API. No app
+patching, no remote-debugging hacks, no MCP rate limits.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 [![Node](https://img.shields.io/badge/node-%E2%89%A518-43853d.svg)](https://nodejs.org)
@@ -25,16 +27,21 @@ design tokens. No app patching, no remote-debugging hacks, no MCP rate limits.
 | Within Figma ToS | ✅ | ❌ |
 | Dependencies | **none** | nvm, daemons, CDP |
 
-Just a Personal Access Token and Node ≥ 18 (built-in `fetch`). One file. Zero deps.
+Just a Personal Access Token and Node ≥ 18 (built-in `fetch`) to read. To write,
+a tiny first-party-style Figma plugin you run inside Figma. Zero deps either way.
 
 ## 🚀 Features
 
+**Read (REST, `figma-pull.mjs`)**
 - 🎯 **Pull solid colors** (fills + strokes) — de-duplicated with usage counts
 - 🔗 **Inspect variable bindings** — which properties (fills, padding, gap, fontSize…) are tokenized
 - 🌈 **Color → token mapping** — matches Figma sRGB to your OKLCH tokens via perceptual **OKLab ΔE**
 - 🔐 **Token-safe** — reads the PAT from env / `.mcp.json`, never writes or commits it
 - 📄 **JSON reports** — `--out` for a machine-readable dump
-- 🪶 **Zero dependencies** — a single `.mjs`, Node ≥ 18
+
+**Write (Plugin, `figma-plugin/`)**
+- ✍️ **Recolor low-contrast badges** to WCAG-2.2-passing values, in your own Figma session
+- 🪶 **No quota, no Enterprise** — runs through the Plugin API, not REST
 
 ## 📦 Install
 
@@ -78,7 +85,7 @@ export FIGMA_PERSONAL_ACCESS_TOKEN="figd_YOUR_TOKEN_HERE"
 }
 ```
 
-## ⚡ Usage
+## ⚡ Usage (read)
 
 ```bash
 # by node id — run from your project root
@@ -107,6 +114,29 @@ figma.com/design/ <FILE_KEY> /My-File?node-id= 72-2591
 | `--file <KEY>` | Figma file key *(or `$FIGMA_FILE_KEY`)* — **required** |
 | `--out <path>` | Write a JSON report (relative to cwd, or absolute) |
 | `-h`, `--help` | Show usage |
+
+## ✍️ Write back ([`figma-plugin/`](./figma-plugin))
+
+**The REST API cannot modify a design.** Figma exposes no endpoint to set a node's
+fill — `figma-pull.mjs` is GET-only by design. Design writes go through the
+**Plugin API**, which runs *inside* Figma. The bundled plugin uses it to recolor
+low-contrast badges to WCAG-2.2-passing values, in your own session — **no MCP
+quota and no Enterprise plan required.**
+
+| Element | From | To | Contrast |
+|---|---|---|---|
+| badge text | `#171717` / `#1e3a8a` on `#2563eb` | **white** | 5.17:1 ✅ |
+| badge bg | `#f87171` (white text) | **`#d3111a`** | 5.43:1 ✅ |
+
+**Run it** (Figma **desktop** app):
+
+1. **Plugins → Development → Import plugin from manifest…** → pick
+   [`figma-plugin/manifest.json`](./figma-plugin/manifest.json).
+2. Open the file and navigate to the page you want to fix.
+3. **Plugins → Development → WCAG Contrast Fix.** It recolors and closes with a
+   summary like `WCAG fix on "Badge" — 2 text -> white, 1 bg -> #d3111a`.
+
+Then re-check with the reader: `figma-pull --file <KEY> <badge-node-id>`.
 
 ## 🌈 Color → token mapping
 
@@ -145,11 +175,13 @@ perceptual distance (ΔE):
 
 ## ⚠️ Limitations
 
+- **REST is read-only for design.** There is no REST endpoint to change a node's
+  fill, text, or layout — use the bundled [plugin](./figma-plugin) for writes.
 - The **Variables REST API** (`/v1/files/:key/variables/local`) requires an
-  **Enterprise** plan + `file_variables:read` scope. Without it you still get every
-  rendered color and the variable ids each property is bound to — just not the
-  variable *definitions*. For full token values, export them in-repo (e.g.
-  `references/variables-export.json`) and match against that.
+  **Enterprise** plan + `file_variables:read` scope (and `:write` to mutate). Without
+  it you still get every rendered color and the variable ids each property is bound
+  to — just not the variable *definitions*. For full token values, export them
+  in-repo (e.g. `references/variables-export.json`) and match against that.
 
 ## 📜 License
 

@@ -1,0 +1,7 @@
+{
+  "name": "WCAG Contrast Fix",
+  "id": "figma-rest-api-wcag-fix",
+  "api": "1.0.0",
+  "main": "code.js",
+  "editorType": ["figma"]
+}
