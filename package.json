@@ -7,7 +7,9 @@
     "figma-pull": "figma-pull.mjs"
   },
   "files": [
-    "figma-pull.mjs"
+    "figma-pull.mjs",
+    "gen-tokens.mjs",
+    "figma-plugin/"
   ],
   "engines": {
     "node": ">=18"
