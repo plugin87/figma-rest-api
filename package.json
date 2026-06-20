@@ -1,6 +1,6 @@
 {
   "name": "figma-rest-api",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Pull design data (colors, variable bindings) from Figma via the official REST API — no app patching, no MCP rate limits. Maps Figma colors to your design tokens.",
   "type": "module",
   "bin": {
