@@ -175,13 +175,16 @@ perceptual distance (ΔE):
 
 ## ⚠️ Limitations
 
-- **REST is read-only for design.** There is no REST endpoint to change a node's
-  fill, text, or layout — use the bundled [plugin](./figma-plugin) for writes.
-- The **Variables REST API** (`/v1/files/:key/variables/local`) requires an
-  **Enterprise** plan + `file_variables:read` scope (and `:write` to mutate). Without
-  it you still get every rendered color and the variable ids each property is bound
-  to — just not the variable *definitions*. For full token values, export them
-  in-repo (e.g. `references/variables-export.json`) and match against that.
+The **Variables REST API** (`/v1/files/:key/variables/local`) requires an
+**Enterprise** plan + `file_variables:read` scope. Without it you still get every
+rendered color and the variable ids each property is bound to — just not the
+variable *definitions*. For full token values, export them in-repo (e.g.
+`references/variables-export.json`) and match against that.
+
+> **Reading and writing are split by design, not by limitation.** `figma-pull.mjs`
+> reads via the REST API; the bundled [plugin](./figma-plugin) writes via the
+> Plugin API. Together they cover the full round-trip — see
+> [Write back](#️-write-back-figma-plugin).
 
 ## 📜 License
 
