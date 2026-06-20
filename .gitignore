@@ -6,6 +6,7 @@
 # Generated reports
 *-report.json
 report.json
+figma-variables-export.json
 
 # Node
 node_modules/
